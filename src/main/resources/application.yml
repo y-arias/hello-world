@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: ms-domain-score
+  kafka:
+    #bootstrap-servers: http://${kafka.host:kafka}:9092 #192.168.255.39:9092
+    bootstrap-servers: http://${kafka.host:10.41.33.179:9092} #192.168.255.39:9092
+    consumer.group-id: domain
+  data:
+    mongodb:
+      #uri:  mongodb://${mongodb.uri:mongodb} #mongodb://192.168.255.39:27017
+      uri:  mongodb://EXPFVC:EXPFVC@${mongodb.uri:10.41.33.22:27017}/FVC-Score #mongodb://192.168.255.39:27017
+      database: FVC-Score
+      #host: ${mongodb.host:mongodb}
+      #port: 27017
+server:
+  port: 8084
+score:
+  prop:
+    montomaximodeuda: 10000
+    tipoacreditacion: "Cliente Competencia"
+    indicadordeudaok: "S"
+    indicadordeudanok: "N"
+    msjerrordeuda: "Cliente con deuda, debe regularizar antes de continuar"
+    biometricvalidationallowed: "1"
+    biometricvalidationtype: "Customer"
+  log:
+    formato:
+      metodo:
+        inicio: "Inicio de metodo {}"
+        inicioentrada: "Inicio de metodo {}, entrada: {}"
+        final: "Fin metodo {} con resultado = {}"
+        finalsimple: "Fin metodo {}"
+      kafka:
+        producer:
+          success: "Sent message=[{}] with offset=[{}]"
+          failure: "Unable to send message=[{}] due to : {}"
+        consumer:
+        otro:
+          mensaje: "Mensaje enviado a kafka [{}]"
+      excepcion: "Ha ocurrido un error: [{}]"
+    messages:
+      error:
+        rutinvalido: "Rut Invalido"

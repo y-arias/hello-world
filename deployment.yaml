@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-domain-score
+  namespace: domain
+  labels:
+    app: ms-domain-score
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-domain-score
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 33%
+  template:
+    metadata:
+      labels:
+        app: ms-domain-score
+    spec:
+      containers:
+      - name: ms-domain-score
+        #image: cl.claro.fvc/ms-domain-score:bac4652f #0.0.10-SNAPSHOT
+        image: nexus.angecom.cl:5000/<APP_NAME_OVV>:<VERSION>
+        #image: http://nexus.angecom.cl:5000/ms-domain-score:2fa335b2
+        ports:
+          - containerPort: 8084
+        livenessProbe:
+          httpGet:
+            #host: localhost
+            path: /actuator/health
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 2
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            #host: localhost
+            path: /actuator/health
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 2
+          failureThreshold: 3
+      imagePullSecrets:
+      - name: registry-angecom
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-domain-score-service
+  namespace: domain
+spec:
+  selector:
+    app: ms-domain-score
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8084
