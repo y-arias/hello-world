@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'maven:3.6.1-jdk-8-alpine'
-      args 'v ${HOME}/mvn/settings.xml:/usr/share/maven/ref/settings.xml' 
+      args '-v ${HOME}/mvn/settings.xml:/usr/share/maven/ref/settings.xml -v /root/.m2:/root/.m2' 
     }
   }
   stages {
