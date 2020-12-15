@@ -1,8 +1,8 @@
 pipeline {
   agent {
     docker {
-      image 'maven:3-alpine' 
-      args 'v ${HOME}/mvn/settings.xml:/usr/share/maven/ref/settings.xml -v /root/.m2:/root/.m2 -u 1000' 
+      image 'maven:3-alpine'
+      args 'v ${HOME}/mvn/settings.xml:/usr/share/maven/ref/settings.xml' 
     }
   }
   stages {
